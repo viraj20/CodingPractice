@@ -5,34 +5,37 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 func main() {
 	var n int
 	scanner := bufio.NewScanner(os.Stdin)
+	const maxCapacity = 10000 * 11
+	buf := make([]byte, maxCapacity)
+	scanner.Buffer(buf, maxCapacity)
+	scanner.Split(bufio.ScanLines)
 
 	scanner.Scan()
 	n, _ = strconv.Atoi((scanner.Text()))
 	for i := 0; i < n; i++ {
-		var numberOfCars int
 		scanner.Scan()
 		scanner.Scan()
-		numberOfCars, _ = strconv.Atoi(scanner.Text())
-		fmt.Println(numberOfCars, "---")
-		count := 1
-		//var currentMax int
+		count := 0
+		var currentMax int
 		var currentValue int
-		for i := 0; i < numberOfCars; i++ {
-			scanner.Scan()
-			currentValue, _ = strconv.Atoi((scanner.Text()))
-			fmt.Println(currentValue, "***")
-			//if i == 0 {
-			//	currentMax = currentValue
-			//}
-			//if currentValue < currentMax {
-			//	currentMax = currentValue
-			//	count++
-			//}
+
+		carsMaxSpeed := scanner.Text()
+		carsMaxSpeedArr := strings.Split(carsMaxSpeed, " ")
+		for i, v := range carsMaxSpeedArr {
+			currentValue, _ = strconv.Atoi(v)
+			if i == 0 {
+				currentMax = currentValue
+				count++
+			} else if currentValue < currentMax {
+				currentMax = currentValue
+				count++
+			}
 		}
 		fmt.Println(count)
 	}
